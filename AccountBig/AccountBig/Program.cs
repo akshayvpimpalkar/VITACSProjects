@@ -62,6 +62,8 @@ namespace BigAccount
         {
             Console.WriteLine("AccountID: {0}\nName: {1}\nBalance: {2}\n", _accid, Name, Balance);
         }
+
+        abstract public void withdrow(float amt); 
     }
 
     class SavingAccount : Account
@@ -72,7 +74,7 @@ namespace BigAccount
             type = "Saving";
         }
 
-        public void withdrow(float amt)
+        public override void withdrow(float amt)
         {
             const int minbal = 10000;
             float x = Balance - amt;
@@ -95,7 +97,7 @@ namespace BigAccount
             type = "Current";
         }
 
-        public void withdrow(float amt)
+        public override void withdrow(float amt)
         {
             Balance -= amt;
         }
