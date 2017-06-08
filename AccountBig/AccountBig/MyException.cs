@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AccountBig
 {
-    class MyException
+    class MyException:ApplicationException
     {
         public string msg;
         public MyException(string msg)
