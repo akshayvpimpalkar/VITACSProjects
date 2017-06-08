@@ -55,7 +55,10 @@ namespace BigAccount
 
         public void deposit(float amt)
         {
-            Balance += amt;
+            if (amt > 0)
+                Balance += amt;
+            else
+                throw new myException("Please enter amt > 0");
         }
 
         public void toString()
@@ -63,7 +66,7 @@ namespace BigAccount
             Console.WriteLine("AccountID: {0}\nName: {1}\nBalance: {2}\n", _accid, Name, Balance);
         }
 
-        abstract public void withdrow(float amt); 
+        abstract public void withdraw(float amt); 
     }
 
     class SavingAccount : Account
@@ -74,7 +77,7 @@ namespace BigAccount
             type = "Saving";
         }
 
-        public override void withdrow(float amt)
+        public override void withdraw(float amt)
         {
             const int minbal = 10000;
             float x = Balance - amt;
@@ -97,7 +100,7 @@ namespace BigAccount
             type = "Current";
         }
 
-        public override void withdrow(float amt)
+        public override void withdraw(float amt)
         {
             Balance -= amt;
         }
@@ -161,12 +164,12 @@ namespace BigAccount
 
             s1.deposit(60.0f);
             s1.toString();
-            s1.withdrow(12462.98f);
+            s1.withdraw(12462.98f);
             s1.toString();
 
             c1.deposit(60.0f);
             c1.toString();
-            c1.withdrow(124622.98f);
+            c1.withdraw(124622.98f);
             c1.toString();
 
             //s2.toString();
