@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BigAccount
 {
-    class Account
+    abstract class Account
     {
         static int id;
         string _name;
