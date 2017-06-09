@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace AccountBig
 {
+    delegate void Display(int a, string b);
+
     abstract class Account
     {
+        public event Display SomeEvent;
+
         static int id;
         string _name;
         float _balance;
@@ -72,7 +76,10 @@ namespace AccountBig
         public void deposit(float amt)
         {
             if (amt > 0)
+            {
                 Balance += amt;
+            }
+                
             else
                 throw new MyException("Please enter amt > 0");
         }
@@ -82,7 +89,14 @@ namespace AccountBig
             return string.Format("AccountID: {0}\nName: {1}\nBalance: {2}\nType: {3}\n", Accid, Name, Balance, Type);
         }
 
-        abstract public void withdraw(float amt); 
+        abstract public void withdraw(float amt);
+
+        public void OnSomeEvent() {
+            if(SomeEvent != null)
+            {
+                SomeEvent(this.Accid, this.Name);
+            }
+        }
     }
 
     class SavingAccount : Account
@@ -100,6 +114,8 @@ namespace AccountBig
             if (x >= minbal && amt > 0)
             {
                 Balance -= amt;
+                OnSomeEvent();
+                Console.WriteLine();
             }
             else
             {
@@ -119,6 +135,8 @@ namespace AccountBig
         public override void withdraw(float amt)
         {
             Balance -= amt;
+            OnSomeEvent();
+            Console.WriteLine();
         }
     }
     static class acc_search
@@ -161,36 +179,52 @@ namespace AccountBig
             }
         }
     }
+
+    class Servicemessage
+    {
+        public static void sendSMS(int id, string name)
+        {
+            Console.WriteLine("Sending SMS for Id: {0}, Name: {1}", id, name);
+        }
+
+        public static void sendEmail(int id, string name)
+        {
+            Console.WriteLine("Sending Email for Id: {0}, Name: {1}", id, name);
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
-            //Account[] a = new Account[3];
-            SavingAccount s1 = new SavingAccount("Akshay", 56000.09f);
-            CurrentAccount c1 = new CurrentAccount("Prasad", 45000.26f);
-            SavingAccount s2 = new SavingAccount("Suraj", 27389.872f);
+            
+            Account s1 = new SavingAccount("Akshay", 56000.09f);
+            Account c1 = new CurrentAccount("Prasad", 45000.26f);
+            Account s2 = new SavingAccount("Suraj", 27389.872f);
 
-            SavingAccount[] saArray = new SavingAccount[2] { s1, s2 };
-            CurrentAccount[] caAccount = new CurrentAccount[1] { c1 };
+            s1.SomeEvent += new Display(Servicemessage.sendSMS);
+            s1.SomeEvent += new Display(Servicemessage.sendEmail);
+            s1.withdraw(2000);
+            //s1.SomeEvent += Servicemessage.sendEmail;
+            s1.withdraw(4000);
+            //s1.Som= Servicemessage.sendEmail;
 
-            //foreach(Account arr in a)
-            //{
-            //    arr.toString();
-            //}
+            s2.SomeEvent += new Display(Servicemessage.sendSMS);
+            s2.SomeEvent += new Display(Servicemessage.sendEmail);
+            s2.withdraw(3457);
 
-            s1.deposit(60.0f);
-            Console.WriteLine(s1);
-            s1.withdraw(12462.98f);
-            Console.WriteLine(s1);
+            //s1.deposit(60.0f);
+            //Console.WriteLine(s1);
+            //s1.withdraw(12462.98f);
+            //Console.WriteLine(s1);
 
-            c1.deposit(60.0f);
-            Console.WriteLine(c1);
-            c1.withdraw(124622.98f);
-            Console.WriteLine(c1);
+            //c1.deposit(60.0f);
+            //Console.WriteLine(c1);
+            //c1.withdraw(124622.98f);
+            //Console.WriteLine(c1);
 
-            //s2.toString();
-            acc_search.search(caAccount, 2);
-            //saArray.ToString();
+
+
         }
     }
 }
