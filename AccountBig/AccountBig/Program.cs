@@ -27,9 +27,10 @@ namespace AccountBig
         }
 
 
-
+        
         public string Name
         {
+            
             get
             {
                 return _name;
