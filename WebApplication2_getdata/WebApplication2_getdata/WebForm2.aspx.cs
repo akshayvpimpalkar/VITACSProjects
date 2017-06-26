@@ -34,6 +34,17 @@ namespace WebApplication2_getdata
             }
              
         }
+//        CREATE PROCEDURE[dbo].[store]
+//        @Eid int,
+//	@Name nvarchar(MAX),
+//	@Salary decimal (18,0)
+//AS
+//BEGIN
+
+//    Insert into Employee(Id, Name, Salary)
+
+//    Values(@Eid, @Name, @Salary)
+//END
 
     }
 }
